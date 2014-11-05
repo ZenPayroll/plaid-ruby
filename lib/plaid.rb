@@ -1,7 +1,11 @@
 require 'plaid/config'
 require 'plaid/call'
 require 'plaid/customer'
+require 'plaid/auth'
+require 'plaid/info'
 require 'rest_client'
+require 'json'
+
 module Plaid
   class << self
     include Plaid::Configure
@@ -15,6 +19,5 @@ module Plaid
     def call
       @call = Plaid::Call.new
     end
-
   end
 end
