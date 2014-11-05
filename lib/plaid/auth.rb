@@ -1,5 +1,3 @@
-require 'json'
-
 module Plaid
   class Auth
     BASE_URL = 'https://tartan.plaid.com/'

@@ -20,10 +20,6 @@ module Plaid
       parse_place(get('entities/',id))
     end
 
-    def get_institutions
-      JSON.parse(get('/institutions'))
-    end
-
     protected
 
     def parse_connect_response(response)

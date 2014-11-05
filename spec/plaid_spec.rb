@@ -1,5 +1,9 @@
 require 'spec_helper.rb'
 
+# TODO:
+# - Don't hardcode access tokens or banks
+# - Check the responses more
+
 describe Plaid, 'Call' do
   before(:all) do |_|
     keys = YAML::load(IO.read('./keys.yml'))
@@ -12,11 +16,6 @@ describe Plaid, 'Call' do
   it 'calls get_place and returns a response code of 200' do
     place = Plaid.call.get_place('526842af335228673f0000b7')
     expect(place[:code]).to eq(200)
-  end
-
-  it 'calls get_institutions and returns a response code of 200' do
-    institutions = Plaid.call.get_institutions
-    expect(institutions.any?).to eq(true)
   end
 
 end
@@ -68,7 +67,30 @@ describe Plaid::Auth do
       end
     end
   end
+end
 
+describe Plaid::Institution do
+  before(:all) do |_|
+    keys = YAML::load(IO.read('./keys.yml'))
+    Plaid.config do |p|
+      p.client_id = keys['CLIENT_ID']
+      p.secret = keys['SECRET']
+    end
+  end
+
+  describe '.all' do
+    it 'responds with a status code of 200' do
+      response = Plaid::Institution.all
+      expect(response[:code]).to equal(200)
+    end
+  end
+
+  describe 'get' do
+    it 'responds with a status code of 200' do
+      response = Plaid::Institution.get('5301a9d704977c52b60000db')
+      expect(response[:code]).to equal(200)
+    end
+  end
 end
 
 describe Plaid, 'Customer' do
