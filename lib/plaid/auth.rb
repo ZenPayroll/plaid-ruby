@@ -29,11 +29,10 @@ module Plaid
         RestClient.post(url, {
           client_id: Plaid.client_id,
           secret: Plaid.secret
-        }.merge!(params).to_json, content_type: :json)
+        }.merge!(params).to_json, content_type: :json) { |rsp, _, _| rsp }
       end
 
       def parse_response(response)
-        # TODO: Should an error cause an exception or return an error hash?
         parsed = JSON.parse(response)
         case response.code
         when 200
@@ -50,7 +49,7 @@ module Plaid
             mfa: parsed['mfa']
           }
         else
-          { code: response.code, message: parsed }
+          { code: response.code, error: parsed }
         end
       end
     end
