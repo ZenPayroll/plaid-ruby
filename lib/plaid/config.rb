@@ -1,8 +1,8 @@
 module Plaid
   module Configure
-    attr_accessor :client_id, :secret
+    attr_accessor :client_id, :secret, :base_url
 
-    KEYS = [:client_id, :secret]
+    KEYS = [:client_id, :secret, :base_url]
 
     def config
       yield self

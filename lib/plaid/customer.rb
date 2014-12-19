@@ -2,9 +2,6 @@ module Plaid
   # This is used when a customer needs to be defined by the plaid access token.
   # Abstracting as a class makes it easier since we wont have to redefine the access_token over and over.
   class Customer
-
-    BASE_URL = 'https://tartan.plaid.com'
-
     # This initializes our instance variables, and sets up a new Customer class.
     def initialize
       Plaid::Configure::KEYS.each do |key|
@@ -47,17 +44,17 @@ module Plaid
     private
 
     def get(path,access_token)
-      url = BASE_URL + path
+      url = Plaid.base_url +path
       RestClient.get(url, params: {client_id: self.instance_variable_get(:'@client_id'), secret: self.instance_variable_get(:'@secret'), access_token: access_token})
     end
 
     def post(path,access_token,options={})
-      url = BASE_URL + path
+      url = Plaid.base_url +path
       RestClient.post url, client_id: self.instance_variable_get(:'@client_id'), secret: self.instance_variable_get(:'@secret'), access_token: access_token, mfa: options[:mfa], type: options[:type]
     end
 
     def delete(path,access_token)
-      url = BASE_URL + path
+      url = Plaid.base_url +path
       RestClient.delete(url, params: {client_id: self.instance_variable_get(:'@client_id'), secret: self.instance_variable_get(:'@secret'), access_token: access_token})
     end
   end

@@ -1,8 +1,5 @@
 module Plaid
   class Call
-
-    BASE_URL = 'https://tartan.plaid.com/'
-
     # This initializes our instance variables, and sets up a new Customer class.
     def initialize
       Plaid::Configure::KEYS.each do |key|
@@ -47,12 +44,13 @@ module Plaid
     private
 
     def post(path,type,username,password,email)
-      url = BASE_URL + path
+      url = Plaid.base_url + path
       RestClient.post url, client_id: self.instance_variable_get(:'@client_id') ,secret: self.instance_variable_get(:'@secret'), type: type ,credentials: {username: username, password: password} ,email: email
     end
 
     def get(path,id = nil)
-      url = BASE_URL + path + id.to_s
+
+      url = Plaid.base_url + path + id.to_s
       RestClient.get(url)
     end
 

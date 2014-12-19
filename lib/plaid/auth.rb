@@ -1,7 +1,5 @@
 module Plaid
   class Auth
-    BASE_URL = 'https://tartan.plaid.com/'
-
     class << self
       def add(type, credentials, options = nil)
         parse_response(post('auth',
@@ -25,7 +23,7 @@ module Plaid
       private
 
       def post(path, params)
-        url = BASE_URL + path
+        url = Plaid.base_url + path
         RestClient.post(url, {
           client_id: Plaid.client_id,
           secret: Plaid.secret

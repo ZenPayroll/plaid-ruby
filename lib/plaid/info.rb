@@ -1,7 +1,5 @@
 module Plaid
   class Info
-    BASE_URL = 'https://tartan.plaid.com/'
-
     def initialize
       Plaid::Configure::KEYS.each do |key|
         instance_variable_set(:"@#{key}", Plaid.instance_variable_get(:"@#{key}"))
@@ -19,7 +17,7 @@ module Plaid
     private
 
     def post(path, params)
-      url = BASE_URL + path
+      url = Plaid.base_url +path
       RestClient.post(url, {
         client_id: Plaid.client_id,
         secret: Plaid.secret
