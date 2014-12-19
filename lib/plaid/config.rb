@@ -8,6 +8,5 @@ module Plaid
       yield self
       self
     end
-
   end
 end

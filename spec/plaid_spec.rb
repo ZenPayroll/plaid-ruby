@@ -6,16 +6,12 @@ require 'spec_helper.rb'
 
 describe Plaid do
   before(:all) do |_|
-    keys = {
-      client_id: 'client_id',
-      secret: 'secret',
-      base_url: 'https://tartan.plaid.com/',
-    }
+    keys = YAML::load(IO.read('./keys.yml'))
 
     Plaid.config do |p|
-      p.client_id = keys.fetch(:client_id)
-      p.secret = keys.fetch(:secret)
-      p.base_url = keys.fetch(:base_url)
+      p.client_id = keys.fetch("client_id")
+      p.secret = keys.fetch("secret")
+      p.base_url = keys.fetch("base_url")
     end
   end
 
