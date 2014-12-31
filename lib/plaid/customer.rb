@@ -49,7 +49,7 @@ module Plaid
     end
 
     def post(path,access_token,options={})
-      url = Plaid.base_url +path
+      url = Plaid.base_url + path
       RestClient.post url, client_id: self.instance_variable_get(:'@client_id'), secret: self.instance_variable_get(:'@secret'), access_token: access_token, mfa: options[:mfa], type: options[:type]
     end
 

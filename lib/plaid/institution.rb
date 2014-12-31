@@ -16,7 +16,7 @@ module Plaid
       private
 
       def rest_get(path, id = nil)
-        RestClient.get(Plaid.base_url +path + id.to_s)
+        RestClient.get(Plaid.base_url + path + id.to_s)
       end
     end
   end

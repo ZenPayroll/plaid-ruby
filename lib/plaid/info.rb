@@ -17,7 +17,7 @@ module Plaid
     private
 
     def post(path, params)
-      url = Plaid.base_url +path
+      url = Plaid.base_url + path
       RestClient.post(url, {
         client_id: Plaid.client_id,
         secret: Plaid.secret
