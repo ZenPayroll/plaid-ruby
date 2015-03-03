@@ -79,6 +79,17 @@ describe Plaid do
     end
   end
 
+  describe Plaid::Upgrade do
+    describe '.upgrade' do
+      it 'can upgrade the service' do
+        response = Plaid::Auth.add('wells', username: 'plaid_test', password: 'plaid_good')
+        expect(response[:code]).to eq(200)
+        response = Plaid::Upgrade.upgrade(response.fetch(:access_token), 'connect')
+        expect(response[:code]).to eq(200)
+      end
+    end
+  end
+
   describe Plaid, 'Customer' do
     it 'calls get_transactions and returns a response code of 200' do
       transactions = Plaid.customer.get_transactions('test')

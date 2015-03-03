@@ -4,6 +4,7 @@ require 'plaid/customer'
 require 'plaid/auth'
 require 'plaid/institution'
 require 'plaid/info'
+require 'plaid/upgrade'
 require 'rest_client'
 require 'json'
 
