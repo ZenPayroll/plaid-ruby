@@ -81,11 +81,21 @@ describe Plaid do
 
   describe Plaid::Upgrade do
     describe '.upgrade' do
+      before do
+        auth_response = Plaid::Auth.add('wells', username: 'plaid_test', password: 'plaid_good')
+        expect(auth_response[:code]).to eq(200)
+        @upgrade_response = Plaid::Upgrade.upgrade(auth_response.fetch(:access_token), 'connect')
+      end
+
       it 'can upgrade the service' do
-        response = Plaid::Auth.add('wells', username: 'plaid_test', password: 'plaid_good')
-        expect(response[:code]).to eq(200)
-        response = Plaid::Upgrade.upgrade(response.fetch(:access_token), 'connect')
-        expect(response[:code]).to eq(200)
+        expect(@upgrade_response[:code]).to eq(200)
+      end
+
+      it 'can retrieve the transactions after upgrading' do
+        response = Plaid::Connect.get(@upgrade_response[:access_token])
+        expect(response.fetch(:code)).to eq(200)
+        expect(response.fetch(:transactions).size).to be >= 1
+        first_transaction = response.fetch(:transactions).first
       end
     end
   end

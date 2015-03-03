@@ -5,6 +5,7 @@ require 'plaid/auth'
 require 'plaid/institution'
 require 'plaid/info'
 require 'plaid/upgrade'
+require 'plaid/connect'
 require 'rest_client'
 require 'json'
 
