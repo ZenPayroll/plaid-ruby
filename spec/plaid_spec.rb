@@ -96,6 +96,11 @@ describe Plaid do
         expect(response.fetch(:code)).to eq(200)
         expect(response.fetch(:transactions).size).to be >= 1
         first_transaction = response.fetch(:transactions).first
+        expect(first_transaction.fetch('amount')).to be
+        expect(first_transaction.fetch('date')).to be
+        expect(first_transaction.fetch('pending')).to_not be_nil
+        expect(first_transaction.fetch('_account')).to be
+        expect(first_transaction.fetch('_id')).to be
       end
     end
   end
