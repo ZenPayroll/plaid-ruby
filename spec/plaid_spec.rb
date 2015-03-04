@@ -80,6 +80,9 @@ describe Plaid do
   end
 
   describe Plaid::Upgrade do
+    let(:account_id) { 'QPO8Jo8vdDHMepg41PBwckXm4KdK1yUdmXOwK' }
+    let(:from) { '2013-06-11' }
+
     describe '.upgrade' do
       before do
         auth_response = Plaid::Auth.add('wells', username: 'plaid_test', password: 'plaid_good')
@@ -92,14 +95,14 @@ describe Plaid do
       end
 
       it 'can retrieve the transactions after upgrading' do
-        response = Plaid::Connect.get(@upgrade_response[:access_token])
+        response = Plaid::Connect.get(@upgrade_response[:access_token], account: account_id, gte: from)
         expect(response.fetch(:code)).to eq(200)
         expect(response.fetch(:transactions).size).to be >= 1
         first_transaction = response.fetch(:transactions).first
         expect(first_transaction.fetch('amount')).to be
         expect(first_transaction.fetch('date')).to be
         expect(first_transaction.fetch('pending')).to_not be_nil
-        expect(first_transaction.fetch('_account')).to be
+        expect(first_transaction.fetch('_account')).to eq account_id
         expect(first_transaction.fetch('_id')).to be
       end
     end

@@ -1,8 +1,8 @@
 module Plaid
   class Connect
     class << self
-      def get(access_token)
-        parse_response(post('connect/get', access_token: access_token))
+      def get(access_token, options={})
+        parse_response(post('connect/get', access_token: access_token, options: options))
       end
       private
 
