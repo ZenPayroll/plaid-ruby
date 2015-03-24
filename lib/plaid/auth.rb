@@ -4,8 +4,8 @@ module Plaid
       def add(type, credentials, options = nil)
         parse_response(post('auth',
           type: type,
-          credentials: credentials,
-          options: options))
+          credentials: credentials.to_json,
+          options: options.to_json))
       end
 
       def get(access_token, type = nil)
@@ -17,21 +17,17 @@ module Plaid
           access_token: access_token,
           mfa: mfa,
           type: type,
-          options: options))
+          options: options.to_json))
       end
 
       private
 
       def post(path, params)
-        url = Plaid.base_url + path
-        RestClient.post(url, {
-          client_id: Plaid.client_id,
-          secret: Plaid.secret
-        }.merge!(params).to_json, content_type: :json) { |rsp, _, _| rsp }
+        Plaid::RestClient.post(path, params)
       end
 
       def parse_response(response)
-        parsed = JSON.parse(response)
+        parsed = response.body
         case response.code
         when 200
           {

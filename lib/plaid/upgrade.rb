@@ -7,23 +7,18 @@ module Plaid
       private
 
       def post(path, params)
-        url = Plaid.base_url + path
-        RestClient.post(url, {
-            client_id: Plaid.client_id,
-            secret: Plaid.secret,
-          }.merge!(params).to_json, content_type: :json) { |rsp, _, _| rsp }
+        Plaid::RestClient.post(path, params)
       end
 
       def parse_response(response)
-        parsed = JSON.parse(response)
         case response.code
         when 200
           {
             code: response.code,
-            access_token: parsed['access_token'],
+            access_token: response.body['access_token'],
           }
         else
-          { code: response.code, error: parsed }
+          { code: response.code, error: response.body }
         end
       end
     end

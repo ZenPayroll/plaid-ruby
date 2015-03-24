@@ -9,8 +9,6 @@ Gem::Specification.new do |s|
   s.files       = ['lib/**/*']
   s.homepage    = 'https://github.com/plaid/plaid-ruby'
   s.license     = 'MIT'
-  s.add_runtime_dependency 'rest-client'
-  s.add_runtime_dependency 'json'
   s.add_development_dependency 'rake'
   s.add_development_dependency 'rspec'
 end
