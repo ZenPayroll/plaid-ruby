@@ -2,18 +2,18 @@ module Plaid
   class Auth
     class << self
       def add(type, credentials, options = nil)
-        parse_response(post('auth',
+        parse_response(Plaid::RestClient.post('auth',
           type: type,
           credentials: credentials.to_json,
           options: options.to_json))
       end
 
       def get(access_token, type = nil)
-        parse_response(post('auth/get', access_token: access_token, type: type))
+        parse_response(Plaid::RestClient.post_with_retry(2, 'auth/get', access_token: access_token, type: type))
       end
 
       def step(access_token, mfa, options = nil, type = nil)
-        parse_response(post('auth/step',
+        parse_response(Plaid::RestClient.post('auth/step',
           access_token: access_token,
           mfa: mfa,
           type: type,
@@ -21,11 +21,6 @@ module Plaid
       end
 
       private
-
-      def post(path, params)
-        Plaid::RestClient.post(path, params)
-      end
-
       def parse_response(response)
         parsed = response.body
         case response.code

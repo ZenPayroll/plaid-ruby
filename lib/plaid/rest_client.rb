@@ -13,6 +13,19 @@ module Plaid
     end
 
     class << self
+      def post_with_retry(retry_count, path, options={})
+        begin
+          return post(path, options)
+        rescue Net::ReadTimeout => e
+          retry_count -= 1
+          if retry_count > 0
+            retry
+          else
+            raise e
+          end
+        end
+      end
+
       def post(path, options={})
         uri = build_uri(path)
         res = Net::HTTP.post_form(uri, options.merge!(client_id: Plaid.client_id, secret: Plaid.secret))
