@@ -86,6 +86,7 @@ describe Plaid do
         expect(first_transaction.fetch('_account')).to eq account_id
         expect(first_transaction.fetch('_id')).to be
       end
+
     end
   end
 end
