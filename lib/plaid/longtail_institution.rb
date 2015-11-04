@@ -14,7 +14,7 @@ module Plaid
         parsed = response.body
         case response.code
         when 200
-          { code: response.code, total: parsed.total_count, institutions: parsed.results}
+          { code: response.code, total: parsed['total_count'], institutions: parsed['results']}
         else
           { code: response.code, error: parsed }
         end
