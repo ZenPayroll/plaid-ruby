@@ -24,6 +24,15 @@ module Plaid
             options: options.to_json))
       end
 
+      def step(access_token, mfa, options = nil, type = nil)
+        parse_response(Plaid::RestClient.post(
+          'connect/step',
+          access_token: access_token,
+          mfa: mfa,
+          type: type,
+          options: options.to_json))
+      end
+
       private
 
       def dates_to_iso8601!(hash)
@@ -40,7 +49,16 @@ module Plaid
         when 200
           {
             code: response.code,
-            transactions: response.body.fetch("transactions")
+            access_token: response.body.fetch('access_token'),
+            accounts: response.body.fetch('accounts'),
+            transactions: response.body.fetch('transactions')
+          }
+        when 201
+          {
+            code: response.code,
+            type: response.body.fetch('type'),
+            access_token: response.body.fetch('access_token'),
+            mfa: response.body.fetch('mfa')
           }
         else
           {code: response.code, error: response.body}
