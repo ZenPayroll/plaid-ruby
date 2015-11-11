@@ -3,7 +3,7 @@ require 'spec_helper'
 module Plaid
   class Connect
     describe 'get' do
-      let(:response) { double('response', code: 200, body: {'transactions' => []}) }
+      let(:response) { double('response', code: 200, body: {'access_token' => 'xxxx', 'accounts' => [], 'transactions' => []}) }
       before do
         allow(Plaid::RestClient).to receive(:post).and_return(response)
       end
@@ -79,6 +79,31 @@ module Plaid
         expect(Plaid::RestClient).to receive(:post).
             with('connect', hash_including(options: '{"gte":"value"}'))
         Plaid::Connect.base('username', 'password', '1234', gte: gte)
+      end
+    end
+
+    describe 'step' do
+      before do
+        keys = YAML::load(IO.read('./keys.yml'))
+
+        Plaid.config do |p|
+          p.client_id = keys.fetch("client_id")
+          p.secret = keys.fetch("secret")
+          p.base_url = keys.fetch("base_url")
+        end
+      end
+
+      context 'when the first answer is given' do
+        it 'responds with a status code of 201' do
+          response = Plaid::Connect.step('test', 'again', nil, 'bofa')
+          expect(response[:code]).to eq(201)
+        end
+      end
+      context 'when the final answer is given' do
+        it 'responds with a status code of 200' do
+          response = Plaid::Connect.step('test', 'tomato', nil, 'bofa')
+          expect(response[:code]).to eq(200)
+        end
       end
     end
   end
