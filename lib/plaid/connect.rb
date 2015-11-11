@@ -45,20 +45,21 @@ module Plaid
       end
 
       def parse_response(response)
+        parsed = response.body
         case response.code
         when 200
           {
             code: response.code,
-            access_token: response.body.fetch('access_token'),
-            accounts: response.body.fetch('accounts'),
-            transactions: response.body.fetch('transactions')
+            access_token: parsed['access_token'],
+            accounts: parsed['accounts'],
+            transactions: parsed['transactions']
           }
         when 201
           {
             code: response.code,
-            type: response.body.fetch('type'),
-            access_token: response.body.fetch('access_token'),
-            mfa: response.body.fetch('mfa')
+            type: parsed['type'],
+            access_token: parsed['access_token'],
+            mfa: parsed.fetch['mfa']
           }
         else
           {code: response.code, error: response.body}

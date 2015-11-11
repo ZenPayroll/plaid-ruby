@@ -1,4 +1,8 @@
 module Plaid
+
+  # TODO: the Plaid Auth API authenticates accounts for ACH transactions, which Gusto does not currently use.
+  # The Plaid Connect API already returns both account balances and account transactions. Consider removing the
+  # Auth requirement in the future.
   class Auth
     class << self
       def add(type, credentials, options = nil)
