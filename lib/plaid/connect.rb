@@ -59,7 +59,7 @@ module Plaid
             code: response.code,
             type: parsed['type'],
             access_token: parsed['access_token'],
-            mfa: parsed.fetch['mfa']
+            mfa: parsed['mfa']
           }
         else
           {code: response.code, error: response.body}
