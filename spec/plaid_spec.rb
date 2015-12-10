@@ -51,9 +51,14 @@ describe Plaid do
     end
 
     describe '.delete' do
-      it 'responds with a status code of 200' do
+      it 'responds with a status code of 200 for a valid access token' do
         response = Plaid::Auth.delete('test_wells')
         expect(response[:code]).to eq(200)
+      end
+
+      it 'responds with a status code of 401 for an invalid access token' do
+        response = Plaid::Auth.delete('not_a_real_access_token')
+        expect(response[:code]).to eq(401)
       end
     end
   end
