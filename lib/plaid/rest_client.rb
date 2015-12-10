@@ -46,4 +46,3 @@ module Plaid
     end
   end
 end
-

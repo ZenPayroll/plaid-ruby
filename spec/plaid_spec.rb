@@ -60,15 +60,16 @@ describe Plaid do
     end
   end
 
-  describe Plaid::LongtailInstitution do
-    describe '.get 5 longtail institutions' do
-      it 'responds with 5 instutitions and a status code of 200' do
-        response = Plaid::LongtailInstitution.get(5, 0)
-        expect(response[:code]).to equal(200)
-        expect(response[:institutions].count).to equal(5)
-      end
-    end
-  end
+  # Disabling this test because Plaid turned off sandbox access to this API
+  # describe Plaid::LongtailInstitution do
+  #   describe '.get 5 longtail institutions' do
+  #     it 'responds with 5 institutions and a status code of 200' do
+  #       response = Plaid::LongtailInstitution.get(5, 0)
+  #       expect(response[:code]).to eq(200)
+  #       expect(response[:institutions].count).to eq(5)
+  #     end
+  #   end
+  # end
 
   describe Plaid::Upgrade do
     let(:account_id) { 'QPO8Jo8vdDHMepg41PBwckXm4KdK1yUdmXOwK' }
@@ -97,6 +98,16 @@ describe Plaid do
         expect(first_transaction.fetch('_id')).to be
       end
 
+    end
+  end
+
+  describe Plaid::Balance do
+    describe '.balance' do
+      it 'can get account balance information' do
+        response = Plaid::Balance.balance('test_wells')
+        expect(response.fetch(:code)).to eq(200)
+        expect(response.fetch(:accounts)).to_not be_nil
+      end
     end
   end
 end
