@@ -18,7 +18,8 @@ module Plaid
       def get(access_token, options={})
         dates_to_iso8601!(options)
 
-        parse_response(Plaid::RestClient.post(
+        parse_response(Plaid::RestClient.post_with_retry(
+            2,
             'connect/get',
             access_token: access_token,
             options: options.to_json))
@@ -31,6 +32,10 @@ module Plaid
           mfa: mfa,
           type: type,
           options: options.to_json))
+      end
+
+      def delete(access_token)
+        parse_response(Plaid::RestClient.delete('connect', access_token: access_token))
       end
 
       private
