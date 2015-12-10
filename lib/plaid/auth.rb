@@ -24,6 +24,10 @@ module Plaid
           options: options.to_json))
       end
 
+      def delete(access_token)
+        parse_response(Plaid::RestClient.delete('auth', access_token: access_token))
+      end
+
       private
       def parse_response(response)
         parsed = response.body

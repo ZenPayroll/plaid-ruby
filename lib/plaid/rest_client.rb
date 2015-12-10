@@ -1,6 +1,7 @@
 require 'net/http'
 require 'json'
 require 'uri'
+require 'cgi'
 module Plaid
   class RestClient
     class JSONResponse
@@ -38,10 +39,26 @@ module Plaid
         JSONResponse.new(res)
       end
 
+      def delete(path, options={})
+        uri = URI.parse(Plaid.base_url)
+        http = Net::HTTP.new(uri.host, uri.port)
+        http.use_ssl = (uri.scheme == 'https')
+
+        delete_request = Net::HTTP::Delete.new('/' + path)
+        delete_request.body = build_form_params(options.merge!(client_id: Plaid.client_id, secret: Plaid.secret))
+
+        response = http.request(delete_request)
+        JSONResponse.new(response)
+      end
+
       protected
       def build_uri(path, option=nil)
         path = path + '/' + option unless option.nil?
         URI.parse(Plaid.base_url + path)
+      end
+
+      def build_form_params(params={})
+        params.collect { |k, v| "#{k.to_s}=#{CGI::escape(v.to_s)}" }.join('&')
       end
     end
   end

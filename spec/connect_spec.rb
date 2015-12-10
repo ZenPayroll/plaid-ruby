@@ -106,5 +106,12 @@ module Plaid
         end
       end
     end
+
+    describe 'delete' do
+      it 'responds with a status code of 200' do
+        response = Plaid::Connect.delete('test_wells')
+        expect(response[:code]).to eq(200)
+      end
+    end
   end
 end
