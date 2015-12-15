@@ -3,14 +3,13 @@ require 'date'
 module Plaid
   class Connect
     class << self
-      def base(username, password, type, options={})
+      def base(type, credentials, options={})
         dates_to_iso8601!(options)
 
         parse_response(Plaid::RestClient.post(
             'connect',
-            username: username,
-            password: password,
             type: type,
+            credentials: credentials.to_json,
             options: options.to_json
           ))
       end
