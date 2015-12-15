@@ -50,27 +50,27 @@ module Plaid
 
       it 'converts gte to ISO8601 format' do
         expect(Plaid::RestClient).to receive(:post).
-            with('connect', hash_including(options: '{"gte":"2013-04-02"}'))
-        Plaid::Connect.base('username', 'password', '1234', gte: DateTime.new(2013, 04, 02, 12, 1, 0))
+            with('connect', hash_including(type: '1234', options: '{"gte":"2013-04-02"}'))
+        Plaid::Connect.base('1234', {username: 'username', password: 'password'}, gte: DateTime.new(2013, 04, 02, 12, 1, 0))
       end
 
       it 'converts gte from date to ISO8601 format' do
         expect(Plaid::RestClient).to receive(:post).
             with('connect', hash_including(options: '{"gte":"2013-04-02"}'))
-        Plaid::Connect.base('username', 'password', '1234', gte: Date.new(2013, 04, 02))
+        Plaid::Connect.base('1234', {username: 'username', password: 'password'}, gte: Date.new(2013, 04, 02))
       end
 
       it 'converts gte from time to ISO8601 format' do
         expect(Plaid::RestClient).to receive(:post).
             with('connect', hash_including(options: '{"gte":"2013-04-02"}'))
-        Plaid::Connect.base('username', 'password', '1234', gte: Time.new(2013, 04, 02, 12, 1, 0))
+        Plaid::Connect.base('1234', {username: 'username', password: 'password'}, gte: Time.new(2013, 04, 02, 12, 1, 0))
       end
 
 
       it 'does not touch the options that is not date' do
         expect(Plaid::RestClient).to receive(:post).
             with('connect', hash_including(options: '{"pending":true}'))
-        Plaid::Connect.base('username', 'password', '1234', pending: true)
+        Plaid::Connect.base('1234', {username: 'username', password: 'password'}, pending: true)
       end
 
       it 'does not convert to ISO8601 format from something it can not do' do
@@ -78,7 +78,7 @@ module Plaid
         gte = double('some value', to_date: date, to_json: '"value"')
         expect(Plaid::RestClient).to receive(:post).
             with('connect', hash_including(options: '{"gte":"value"}'))
-        Plaid::Connect.base('username', 'password', '1234', gte: gte)
+        Plaid::Connect.base('1234', {username: 'username', password: 'password'}, gte: gte)
       end
     end
 
