@@ -1,3 +1,4 @@
+require 'plaid/info'
 require 'plaid/balance'
 require 'plaid/config'
 require 'plaid/rest_client'
