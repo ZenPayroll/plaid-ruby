@@ -15,7 +15,7 @@ module Plaid
           {
             code: response.code,
             access_token: parsed['access_token'],
-            accounts: parsed['info']
+            info: parsed['info']
           }
         else
           { code: response.code, error: parsed }
