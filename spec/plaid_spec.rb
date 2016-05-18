@@ -122,4 +122,14 @@ describe Plaid do
       end
     end
   end
+
+  describe Plaid::Info do
+    describe '.get' do
+      it 'can get account info' do
+        response = Plaid::Info.get('test_wells')
+        expect(response.fetch(:code)).to eq(200)
+        expect(response.fetch(:info)).to_not be_nil
+      end
+    end
+  end
 end
