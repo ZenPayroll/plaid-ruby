@@ -72,17 +72,6 @@ describe Plaid do
     end
   end
 
-  # Disabling this test because Plaid turned off sandbox access to this API
-  # describe Plaid::LongtailInstitution do
-  #   describe '.get 5 longtail institutions' do
-  #     it 'responds with 5 institutions and a status code of 200' do
-  #       response = Plaid::LongtailInstitution.get(5, 0)
-  #       expect(response[:code]).to eq(200)
-  #       expect(response[:institutions].count).to eq(5)
-  #     end
-  #   end
-  # end
-
   describe Plaid::Upgrade do
     let(:account_id) { 'QPO8Jo8vdDHMepg41PBwckXm4KdK1yUdmXOwK' }
     let(:from) { '2013-06-11' }
