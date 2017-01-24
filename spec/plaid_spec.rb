@@ -2,12 +2,10 @@ require 'spec_helper.rb'
 
 describe Plaid do
   before(:all) do |_|
-    keys = YAML::load(IO.read('./keys.yml'))
-
     Plaid.config do |p|
-      p.client_id = keys.fetch("client_id")
-      p.secret = keys.fetch("secret")
-      p.base_url = keys.fetch("base_url")
+      p.client_id = '53992fae511d031b4b55d0bb'
+      p.secret = 'BogDuzI78LczE4W9GXTXx9'
+      p.base_url = 'https://tartan.plaid.com/'
     end
   end
 
