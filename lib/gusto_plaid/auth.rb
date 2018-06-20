@@ -1,23 +1,23 @@
-module Plaid
+module GustoPlaid
 
-  # TODO: the Plaid Auth API authenticates accounts for ACH transactions, which Gusto does not currently use.
-  # The Plaid Connect API already returns both account balances and account transactions. Consider removing the
+  # TODO: the GustoPlaid Auth API authenticates accounts for ACH transactions, which Gusto does not currently use.
+  # The GustoPlaid Connect API already returns both account balances and account transactions. Consider removing the
   # Auth requirement in the future.
   class Auth
     class << self
       def add(type, credentials, options = nil)
-        parse_response(Plaid::RestClient.post('auth',
+        parse_response(GustoPlaid::RestClient.post('auth',
           type: type,
           credentials: credentials.to_json,
           options: options.to_json))
       end
 
       def get(access_token, type = nil)
-        parse_response(Plaid::RestClient.post_with_retry(2, 'auth/get', access_token: access_token, type: type))
+        parse_response(GustoPlaid::RestClient.post_with_retry(2, 'auth/get', access_token: access_token, type: type))
       end
 
       def step(access_token, mfa, options = nil, type = nil)
-        parse_response(Plaid::RestClient.post('auth/step',
+        parse_response(GustoPlaid::RestClient.post('auth/step',
           access_token: access_token,
           mfa: mfa,
           type: type,
@@ -25,7 +25,7 @@ module Plaid
       end
 
       def delete(access_token)
-        parse_response(Plaid::RestClient.delete('auth', access_token: access_token))
+        parse_response(GustoPlaid::RestClient.delete('auth', access_token: access_token))
       end
 
       private

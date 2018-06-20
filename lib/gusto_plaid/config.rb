@@ -1,4 +1,4 @@
-module Plaid
+module GustoPlaid
   module Configure
     attr_accessor :client_id, :secret, :base_url
 

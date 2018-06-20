@@ -1,9 +1,9 @@
-module Plaid
+module GustoPlaid
 
   class Info
     class << self
       def get(access_token)
-        parse_response(Plaid::RestClient.post('info/get', access_token: access_token))
+        parse_response(GustoPlaid::RestClient.post('info/get', access_token: access_token))
       end
 
       private

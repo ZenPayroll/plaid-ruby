@@ -1,28 +1,28 @@
 require 'spec_helper.rb'
 
-describe Plaid do
+describe GustoPlaid do
   before(:all) do |_|
     keys = YAML::load(IO.read('./keys.yml'))
 
-    Plaid.config do |p|
+    GustoPlaid.config do |p|
       p.client_id = keys.fetch("client_id")
       p.secret = keys.fetch("secret")
       p.base_url = keys.fetch("base_url")
     end
   end
 
-  describe Plaid::Auth do
+  describe GustoPlaid::Auth do
     describe '.add' do
       context 'when the bank does not require MFA' do
         it 'responds with a status code of 200' do
-          response = Plaid::Auth.add('wells', username: 'plaid_test', password: 'plaid_good')
+          response = GustoPlaid::Auth.add('wells', username: 'plaid_test', password: 'plaid_good')
           expect(response[:code]).to eq(200)
         end
       end
 
       context 'when the bank requires MFA' do
         it 'responds with a status code of 201' do
-          response = Plaid::Auth.add('chase', username: 'plaid_test', password: 'plaid_good')
+          response = GustoPlaid::Auth.add('chase', username: 'plaid_test', password: 'plaid_good')
           expect(response[:code]).to eq(201)
         end
       end
@@ -30,7 +30,7 @@ describe Plaid do
 
     describe '.get' do
       it 'responds with a status code of 200' do
-        response = Plaid::Auth.get('test_chase')
+        response = GustoPlaid::Auth.get('test_chase')
         expect(response[:code]).to equal(200)
       end
     end
@@ -38,13 +38,13 @@ describe Plaid do
     describe '.step' do
       context 'when the first answer is given' do
         it 'responds with a status code of 201' do
-          response = Plaid::Auth.step('test', 'again', nil, 'bofa')
+          response = GustoPlaid::Auth.step('test', 'again', nil, 'bofa')
           expect(response[:code]).to eq(201)
         end
       end
       context 'when the final answer is given' do
         it 'responds with a status code of 200' do
-          response = Plaid::Auth.step('test', 'tomato', nil, 'bofa')
+          response = GustoPlaid::Auth.step('test', 'tomato', nil, 'bofa')
           expect(response[:code]).to eq(200)
         end
       end
@@ -52,35 +52,35 @@ describe Plaid do
 
     describe '.delete' do
       it 'responds with a status code of 200 for a valid access token' do
-        response = Plaid::Auth.delete('test_wells')
+        response = GustoPlaid::Auth.delete('test_wells')
         expect(response[:code]).to eq(200)
       end
 
       it 'responds with a status code of 401 for an invalid access token' do
-        response = Plaid::Auth.delete('not_a_real_access_token')
+        response = GustoPlaid::Auth.delete('not_a_real_access_token')
         expect(response[:code]).to eq(401)
       end
     end
   end
 
-  describe Plaid::Institution do
+  describe GustoPlaid::Institution do
     describe '.all' do
       it 'responds with a status code of 200' do
-        response = Plaid::Institution.all
+        response = GustoPlaid::Institution.all
         expect(response[:code]).to equal(200)
       end
     end
   end
 
-  describe Plaid::Upgrade do
+  describe GustoPlaid::Upgrade do
     let(:account_id) { 'QPO8Jo8vdDHMepg41PBwckXm4KdK1yUdmXOwK' }
     let(:from) { '2013-06-11' }
 
     describe '.upgrade' do
       before do
-        auth_response = Plaid::Auth.add('wells', username: 'plaid_test', password: 'plaid_good')
+        auth_response = GustoPlaid::Auth.add('wells', username: 'plaid_test', password: 'plaid_good')
         expect(auth_response[:code]).to eq(200)
-        @upgrade_response = Plaid::Upgrade.upgrade(auth_response.fetch(:access_token), 'connect')
+        @upgrade_response = GustoPlaid::Upgrade.upgrade(auth_response.fetch(:access_token), 'connect')
       end
 
       it 'can upgrade the service' do
@@ -88,7 +88,7 @@ describe Plaid do
       end
 
       it 'can retrieve the transactions after upgrading' do
-        response = Plaid::Connect.get(@upgrade_response[:access_token], account: account_id, gte: from)
+        response = GustoPlaid::Connect.get(@upgrade_response[:access_token], account: account_id, gte: from)
         expect(response.fetch(:code)).to eq(200)
         expect(response.fetch(:transactions).size).to be >= 1
         first_transaction = response.fetch(:transactions).first
@@ -102,20 +102,20 @@ describe Plaid do
     end
   end
 
-  describe Plaid::Balance do
+  describe GustoPlaid::Balance do
     describe '.balance' do
       it 'can get account balance information' do
-        response = Plaid::Balance.balance('test_wells')
+        response = GustoPlaid::Balance.balance('test_wells')
         expect(response.fetch(:code)).to eq(200)
         expect(response.fetch(:accounts)).to_not be_nil
       end
     end
   end
 
-  describe Plaid::Info do
+  describe GustoPlaid::Info do
     describe '.get' do
       it 'can get account info' do
-        response = Plaid::Info.get('test_wells')
+        response = GustoPlaid::Info.get('test_wells')
         expect(response.fetch(:code)).to eq(200)
         expect(response.fetch(:info)).to_not be_nil
       end
