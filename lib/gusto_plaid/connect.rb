@@ -1,12 +1,12 @@
 require 'date'
 
-module Plaid
+module GustoPlaid
   class Connect
     class << self
       def base(type, credentials, options={})
         dates_to_iso8601!(options)
 
-        parse_response(Plaid::RestClient.post(
+        parse_response(GustoPlaid::RestClient.post(
             'connect',
             type: type,
             credentials: credentials.to_json,
@@ -17,7 +17,7 @@ module Plaid
       def get(access_token, options={})
         dates_to_iso8601!(options)
 
-        parse_response(Plaid::RestClient.post_with_retry(
+        parse_response(GustoPlaid::RestClient.post_with_retry(
             2,
             'connect/get',
             access_token: access_token,
@@ -25,7 +25,7 @@ module Plaid
       end
 
       def step(access_token, mfa, options = nil, type = nil)
-        parse_response(Plaid::RestClient.post(
+        parse_response(GustoPlaid::RestClient.post(
           'connect/step',
           access_token: access_token,
           mfa: mfa,
@@ -34,7 +34,7 @@ module Plaid
       end
 
       def delete(access_token)
-        parse_response(Plaid::RestClient.delete('connect', access_token: access_token))
+        parse_response(GustoPlaid::RestClient.delete('connect', access_token: access_token))
       end
 
       private

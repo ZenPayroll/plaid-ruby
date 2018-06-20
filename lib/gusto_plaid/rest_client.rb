@@ -2,7 +2,7 @@ require 'net/http'
 require 'json'
 require 'uri'
 require 'cgi'
-module Plaid
+module GustoPlaid
   class RestClient
     class JSONResponse
       attr_reader :code, :body
@@ -29,7 +29,7 @@ module Plaid
 
       def post(path, options={})
         uri = build_uri(path)
-        res = Net::HTTP.post_form(uri, options.merge!(client_id: Plaid.client_id, secret: Plaid.secret))
+        res = Net::HTTP.post_form(uri, options.merge!(client_id: GustoPlaid.client_id, secret: GustoPlaid.secret))
         return JSONResponse.new(res)
       end
 
@@ -40,12 +40,12 @@ module Plaid
       end
 
       def delete(path, options={})
-        uri = URI.parse(Plaid.base_url)
+        uri = URI.parse(GustoPlaid.base_url)
         http = Net::HTTP.new(uri.host, uri.port)
         http.use_ssl = (uri.scheme == 'https')
 
         delete_request = Net::HTTP::Delete.new('/' + path)
-        delete_request.body = build_form_params(options.merge!(client_id: Plaid.client_id, secret: Plaid.secret))
+        delete_request.body = build_form_params(options.merge!(client_id: GustoPlaid.client_id, secret: GustoPlaid.secret))
 
         response = http.request(delete_request)
         JSONResponse.new(response)
@@ -54,7 +54,7 @@ module Plaid
       protected
       def build_uri(path, option=nil)
         path = path + '/' + option unless option.nil?
-        URI.parse(Plaid.base_url + path)
+        URI.parse(GustoPlaid.base_url + path)
       end
 
       def build_form_params(params={})

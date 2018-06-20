@@ -1,4 +1,4 @@
-module Plaid
+module GustoPlaid
   class Institution
     class << self
       def all(count=50, offset=0)

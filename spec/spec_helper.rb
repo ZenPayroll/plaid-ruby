@@ -1,2 +1,2 @@
 require 'yaml'
-require 'plaid' # and any other gems you need
+require 'gusto_plaid' # and any other gems you need

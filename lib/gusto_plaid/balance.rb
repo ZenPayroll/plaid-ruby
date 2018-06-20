@@ -1,9 +1,9 @@
-module Plaid
+module GustoPlaid
 
   class Balance
     class << self
       def balance(access_token)
-        parse_response(Plaid::RestClient.post('balance', access_token: access_token))
+        parse_response(GustoPlaid::RestClient.post('balance', access_token: access_token))
       end
 
       private

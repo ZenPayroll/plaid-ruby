@@ -1,4 +1,4 @@
-module Plaid
+module GustoPlaid
   class Upgrade
     class << self
       def upgrade(access_token, upgrade_to)
@@ -7,7 +7,7 @@ module Plaid
       private
 
       def post(path, params)
-        Plaid::RestClient.post(path, params)
+        GustoPlaid::RestClient.post(path, params)
       end
 
       def parse_response(response)
