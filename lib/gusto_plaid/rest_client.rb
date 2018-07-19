@@ -17,7 +17,7 @@ module GustoPlaid
       def post_with_retry(retry_count, path, options={})
         begin
           return post(path, options)
-        rescue Net::ReadTimeout => e
+        rescue Net::ReadTimeout, Net::HTTPBadResponse => e
           retry_count -= 1
           if retry_count > 0
             retry
